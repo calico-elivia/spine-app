@@ -1,0 +1,27 @@
+
+test_rabbit_000.png
+size: 163,97
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dec_001
+  rotate: false
+  xy: 123, 7
+  size: 38, 38
+  orig: 40, 40
+  offset: 1, 1
+  index: -1
+dec_002
+  rotate: false
+  xy: 123, 47
+  size: 33, 48
+  orig: 36, 51
+  offset: 2, 2
+  index: -1
+rabbit_000
+  rotate: true
+  xy: 2, 2
+  size: 93, 119
+  orig: 96, 123
+  offset: 2, 1
+  index: -1

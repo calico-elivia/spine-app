@@ -1,0 +1,80 @@
+{
+  "skeleton": {
+    "hash": "5fTl4uktmh/lj6n52KHuiFYUvSw",
+    "spine": "3.8.99",
+    "x": -48,
+    "y": -61,
+    "width": 96,
+    "height": 123
+  },
+  "bones": [
+    { "name": "root" },
+    { "name": "rabbit_000", "parent": "root", "y": -38 },
+    {
+      "name": "dec_001",
+      "parent": "rabbit_000",
+      "x": 6.34,
+      "y": 58.46,
+      "skin": true
+    },
+    {
+      "name": "dec_002",
+      "parent": "rabbit_000",
+      "length": 29.66,
+      "rotation": 97.62,
+      "x": -1.94,
+      "y": 50.18,
+      "skin": true
+    }
+  ],
+  "slots": [
+    { "name": "rabbit_000", "bone": "rabbit_000", "attachment": "rabbit_000" },
+    { "name": "dec_001", "bone": "dec_001", "attachment": "dec_001" },
+    { "name": "dec_002", "bone": "dec_002", "attachment": "dec_002" }
+  ],
+  "skins": [
+    {
+      "name": "default",
+      "attachments": {
+        "dec_001": {
+          "dec_001": { "x": 0.83, "y": -1.66, "width": 40, "height": 40 }
+        },
+        "dec_002": {
+          "dec_002": {
+            "x": 17.6,
+            "y": -1.1,
+            "rotation": -97.62,
+            "width": 36,
+            "height": 51
+          }
+        },
+        "rabbit_000": {
+          "rabbit_000": { "y": 38.5, "width": 96, "height": 123 }
+        }
+      }
+    },
+    { "name": "000" },
+    {
+      "name": "001",
+      "bones": ["dec_001"]
+    },
+    {
+      "name": "002",
+      "bones": ["dec_002"]
+    }
+  ],
+  "animations": {
+    "animation": {
+      "bones": {
+        "rabbit_000": {
+          "scale": [
+            { "curve": 0.25, "c3": 0.75 },
+            { "time": 0.1667, "x": 1.1, "y": 0.9, "curve": 0.25, "c3": 0.75 },
+            { "time": 0.2667, "y": 1.2, "curve": 0.25, "c3": 0.75 },
+            { "time": 0.5 }
+          ]
+        }
+      }
+    }
+  }
+}
