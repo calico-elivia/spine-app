@@ -1,0 +1,13 @@
+test_rabbit_000.png
+size:163,97
+filter:Linear,Linear
+dec_001
+bounds:123,7,38,38
+offsets:1,1,40,40
+dec_002
+bounds:123,47,33,48
+offsets:2,2,36,51
+rabbit_000
+bounds:2,2,93,119
+offsets:2,1,96,123
+rotate:90
