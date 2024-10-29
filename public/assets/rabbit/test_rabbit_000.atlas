@@ -1,27 +1,58 @@
-
 test_rabbit_000.png
-size: 163,97
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-dec_001
-  rotate: false
-  xy: 123, 7
-  size: 38, 38
-  orig: 40, 40
-  offset: 1, 1
-  index: -1
-dec_002
-  rotate: false
-  xy: 123, 47
-  size: 33, 48
-  orig: 36, 51
-  offset: 2, 2
-  index: -1
-rabbit_000
-  rotate: true
-  xy: 2, 2
-  size: 93, 119
-  orig: 96, 123
-  offset: 2, 1
-  index: -1
+size:312,267
+filter:Linear,Linear
+body/rabbit_000
+bounds:2,145,91,120
+offsets:3,1,96,123
+body/rabbit_001
+bounds:2,23,91,120
+offsets:3,1,96,123
+body/rabbit_002
+bounds:95,145,91,120
+offsets:3,1,96,123
+body/rabbit_007
+bounds:95,23,91,120
+offsets:3,1,96,123
+equip/dec_001
+bounds:272,95,38,38
+offsets:1,1,40,40
+equip/dec_002
+bounds:275,135,33,48
+offsets:2,2,36,51
+equip/dec_003
+bounds:246,20,59,23
+offsets:1,1,61,24
+equip/dec_004
+bounds:188,107,82,35
+equip/dec_005
+bounds:188,2,56,41
+offsets:1,1,58,43
+equip/dec_006
+bounds:271,60,39,33
+offsets:1,1,41,35
+equip/glasses_001
+bounds:188,144,85,39
+equip/glasses_002
+bounds:188,80,81,25
+offsets:1,1,83,27
+equip/wig_001
+bounds:188,185,118,80
+offsets:2,1,121,83
+face/blush
+bounds:2,4,65,17
+offsets:18,40,96,123
+face/eyes_1
+bounds:69,11,44,10
+offsets:27,52,96,123
+face/eyes_2
+bounds:188,45,66,33
+offsets:15,37,96,123
+face/mouth_1
+bounds:246,7,14,11
+offsets:43,45,96,123
+face/mouth_2
+bounds:69,2,13,7
+offsets:44,46,96,123
+face/mouth_3
+bounds:115,12,15,9
+offsets:43,44,96,123

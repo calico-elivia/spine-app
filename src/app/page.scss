@@ -4,15 +4,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: url("/assets/img/wamr_background_1.png");
+  background: url("/assets/img/wamr_background_1.jpg") left top / 100% 100%
+    no-repeat;
   .header {
     height: 10vh;
-    .timer {
-      color: crimson;
-      font-size: 2rem;
-      font-weight: 900;
-      text-shadow: #3e3e3e 2px 2px;
-    }
     .topFixBtns {
       display: flex;
       flex-direction: column;
@@ -21,12 +16,12 @@
     }
   }
   .holeWrap {
-    background-color: #333;
-    margin: 0 20vw;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 10vh 0 0 10vh;
     .hole {
-      border: 1px solid red;
-      height: 20vh;
-      width: 20vw;
+      position: absolute;
     }
   }
   .footer {
@@ -42,18 +37,6 @@
       width: 23%;
     }
   }
-  .startBtn {
-    color: #3e3e3e;
-    line-height: 50px;
-    text-align: center;
-    height: 50px;
-    width: 100px;
-    border-radius: 25px;
-    background: yellow;
-    position: absolute;
-    bottom: 30vh;
-    left: calc(50% - 50px);
-  }
   .prizeModal {
     position: absolute;
     left: 50%;
@@ -64,18 +47,6 @@
       font-size: 2rem;
       font-weight: 900;
       text-shadow: #3e3e3e 2px 2px;
-    }
-    .restartBtn {
-      margin-top: 20vh;
-      color: #3e3e3e;
-      line-height: 50px;
-      text-align: center;
-      height: 50px;
-      width: 100px;
-      border-radius: 25px;
-      background: yellow;
-      font-size: 1rem;
-      font-weight: normal;
     }
   }
   .messageModal {
