@@ -12,39 +12,39 @@ export const AudioMap: mapType = {
 
 export const rabbitHolePosition = [
   {
-    left: 40,
-    top: 210,
+    left: 100,
+    top: 250,
   },
   {
-    left: 145,
-    top: 210,
+    left: 272.5,
+    top: 250,
   },
   {
-    left: 250,
-    top: 210,
+    left: 445,
+    top: 250,
   },
   {
-    left: 40,
-    top: 340,
+    left: 100,
+    top: 400,
   },
   {
-    left: 145,
-    top: 340,
+    left: 272.5,
+    top: 400,
   },
   {
-    left: 250,
-    top: 340,
+    left: 445,
+    top: 400,
   },
   {
-    left: 40,
-    top: 470,
+    left: 100,
+    top: 550,
   },
   {
-    left: 145,
-    top: 470,
+    left: 272.5,
+    top: 550,
   },
   {
-    left: 250,
-    top: 470,
+    left: 445,
+    top: 550,
   },
 ];

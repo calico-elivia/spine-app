@@ -28,17 +28,27 @@ export default function Home() {
   const [playing, setPlaying] = useState(false);
   const [bgAudio, setBgAudio] = useState<any>(null);
   const audioRef = useRef<any>(null);
-  const [screenSize, setScreenSize] = useState({ x: 1, y: 1 });
+  const [screenSize, setScreenSize] = useState({ x: 0, y: 0 });
+  const [orderList, setOrderList] = useState([]);
   // const [socket, setSocket] = useState<any>(null);
 
   // 自適應畫面大小
   const rabbitPosition = () => {
-    const defaultWidth = 390;
-    const defaultHeight = 844;
+    // 原始背景圖大小
+    const defaultWidth = 640;
+    const defaultHeight = 982;
     const width = window.innerWidth;
     const height = window.innerHeight;
     const result = { x: width / defaultWidth, y: height / defaultHeight };
     setScreenSize(result);
+  };
+
+  // 判斷後端給的是第幾個洞
+  const pickHole = (x, y) => {
+    const index = (y - 1) * 3 + (x - 1);
+    let arr = [...orderList];
+    arr.push(index);
+    setOrderList(arr);
   };
 
   useEffect(() => {
@@ -54,6 +64,7 @@ export default function Home() {
     };
 
     rabbitPosition();
+    pickHole(1, 1);
 
     //ws
     // setSocket(new WebSocket(websocktUrl));
@@ -119,8 +130,10 @@ export default function Home() {
             <div
               className="hole"
               style={{
-                top: hole.top * screenSize.x,
-                left: hole.left * screenSize.y,
+                left: hole.left * screenSize.x,
+                top: hole.top * screenSize.y,
+                height: 100 * screenSize.y,
+                width: 100 * screenSize.x,
               }}
               key={index}
             >

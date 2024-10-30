@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { SpinePlayer } from "@esotericsoftware/spine-player";
-import "./spinePlayer.scss";
+// import "./spinePlayer.scss";
 
 export default function CustomSpinePlayer(props: any) {
   const playerContainerRef = useRef(null);
@@ -21,7 +21,7 @@ export default function CustomSpinePlayer(props: any) {
       preserveDrawingBuffer: false,
       alpha: true, // Enable player translucency
       success: (player) => {
-        console.log(player);
+        // console.log(player);
         // player.setAnimation("hit", true);
       },
     });
@@ -39,7 +39,7 @@ export default function CustomSpinePlayer(props: any) {
     <div
       id={`player-container-${position}`}
       ref={playerContainerRef}
-      style={{ width: "100px", height: "100px" }}
+      style={{ width: "100%", height: "100%" }}
       onMouseDown={(e) => {
         console.log(e);
       }}
