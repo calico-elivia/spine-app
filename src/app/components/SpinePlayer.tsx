@@ -15,7 +15,7 @@ export default function CustomSpinePlayer(props: any) {
     const p1 = new SpinePlayer(`player-container-${position}`, {
       jsonUrl: jsonUrl,
       atlasUrl: atlasUrl,
-      // animations: ["idle"],
+      animations: animations,
       skin: skin,
       showControls: false,
       preserveDrawingBuffer: false,

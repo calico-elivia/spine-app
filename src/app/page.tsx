@@ -29,7 +29,6 @@ export default function Home() {
   const [bgAudio, setBgAudio] = useState<any>(null);
   const audioRef = useRef<any>(null);
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 });
-  const [orderList, setOrderList] = useState([]);
   // const [socket, setSocket] = useState<any>(null);
 
   // 自適應畫面大小
@@ -44,11 +43,11 @@ export default function Home() {
   };
 
   // 判斷後端給的是第幾個洞
-  const pickHole = (x, y) => {
-    const index = (y - 1) * 3 + (x - 1);
-    let arr = [...orderList];
-    arr.push(index);
-    setOrderList(arr);
+  const triggerRabbit = (index: number) => {
+    const x = 1;
+    const y = 1;
+    const result = (y - 1) * 3 + (x - 1);
+    return result === index ? ["idle"] : [];
   };
 
   useEffect(() => {
@@ -64,7 +63,6 @@ export default function Home() {
     };
 
     rabbitPosition();
-    pickHole(1, 1);
 
     //ws
     // setSocket(new WebSocket(websocktUrl));
@@ -141,8 +139,8 @@ export default function Home() {
                 jsonUrl={jsonUrl}
                 atlasUrl={atlasUrl}
                 skin={"001"}
-                position={index + 1}
-                // animations={["jumpOut"]}
+                position={index}
+                animations={triggerRabbit(index)}
               />
             </div>
           );
