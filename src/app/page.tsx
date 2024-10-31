@@ -1,5 +1,5 @@
 "use client"; //
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CustomSpinePlayer from "./components/SpinePlayer";
 import "./page.scss";
 import { AudioMap, rabbitHolePosition } from "./constant";
@@ -29,10 +29,11 @@ export default function Home() {
   const [bgAudio, setBgAudio] = useState<any>(null);
   const audioRef = useRef<any>(null);
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 });
+  const [active, setActive] = useState(Array(9).fill(false));
   // const [socket, setSocket] = useState<any>(null);
 
   // 自適應畫面大小
-  const rabbitPosition = () => {
+  const displayRabbitPosition = () => {
     // 原始背景圖大小
     const defaultWidth = 640;
     const defaultHeight = 982;
@@ -43,12 +44,37 @@ export default function Home() {
   };
 
   // 判斷後端給的是第幾個洞
-  const triggerRabbit = (index: number) => {
-    const x = 1;
-    const y = 1;
-    const result = (y - 1) * 3 + (x - 1);
-    return result === index ? ["idle"] : [];
-  };
+  const triggerRabbit = useCallback(
+    (index: number) => {
+      if (index == null) return;
+      return active[index];
+      // const x = 1;
+      // const y = 1;
+      // const result = (y - 1) * 3 + (x - 1);
+    },
+    [active]
+  );
+
+  useEffect(() => {
+    if (!start) return;
+    const interval = setInterval(() => {
+      const ram = Math.floor(Math.random() * 9);
+      setActive((prevActive) => {
+        const newActive = [...prevActive];
+        newActive[ram] = true; // 將隨機位置設為 true
+        return newActive;
+      });
+
+      setTimeout(() => {
+        setActive((prevActive) => {
+          const newActive = [...prevActive];
+          newActive[ram] = false;
+          return newActive;
+        });
+      }, 1500);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [start]);
 
   useEffect(() => {
     // 设定背景音乐
@@ -62,7 +88,7 @@ export default function Home() {
       setStart(true);
     };
 
-    rabbitPosition();
+    displayRabbitPosition();
 
     //ws
     // setSocket(new WebSocket(websocktUrl));
@@ -88,7 +114,7 @@ export default function Home() {
     //     console.log("event.target", event.target);
     //   }
     // });
-    window.addEventListener("resize", () => rabbitPosition());
+    window.addEventListener("resize", displayRabbitPosition);
   }, []);
 
   //背景音樂播放
@@ -119,6 +145,9 @@ export default function Home() {
           <button onClick={playing ? pause : play}>
             {playing ? "Pause" : "Play"}
           </button>
+          <button onClick={() => setStart(!start)}>
+            {start ? "Stop" : "Start"}
+          </button>
           <button onClick={() => setShowGameItem(true)}>加速器</button>
         </div>
       </div>
@@ -135,13 +164,16 @@ export default function Home() {
               }}
               key={index}
             >
-              <CustomSpinePlayer
-                jsonUrl={jsonUrl}
-                atlasUrl={atlasUrl}
-                skin={"001"}
-                position={index}
-                animations={triggerRabbit(index)}
-              />
+              {/* {index == 0 && ( */}
+              {triggerRabbit(index) && (
+                <CustomSpinePlayer
+                  jsonUrl={jsonUrl}
+                  atlasUrl={atlasUrl}
+                  skin={"004"}
+                  position={index}
+                  animationSpeed={1}
+                />
+              )}
             </div>
           );
         })}

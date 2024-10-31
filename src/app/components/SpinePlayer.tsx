@@ -1,33 +1,34 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { SpinePlayer } from "@esotericsoftware/spine-player";
-// import "./spinePlayer.scss";
 
 export default function CustomSpinePlayer(props: any) {
   const playerContainerRef = useRef(null);
-  // const [animation, setAnimation] = useState([]);
-  const { jsonUrl, atlasUrl, skin, position, animations } = props;
-  const [hit, setHit] = useState(false);
+  const { jsonUrl, atlasUrl, skin, position, animationSpeed } = props;
 
-  const checkHit = (e) => {};
+  const checkHit = (e) => {
+    if (e.target) console.log("HIT!");
+  };
 
   useEffect(() => {
     // spine動畫
     const p1 = new SpinePlayer(`player-container-${position}`, {
       jsonUrl: jsonUrl,
       atlasUrl: atlasUrl,
-      animations: animations,
       skin: skin,
       showControls: false,
       preserveDrawingBuffer: false,
       alpha: true, // Enable player translucency
       success: (player) => {
-        // console.log(player);
-        // player.setAnimation("hit", true);
+        player.setAnimation("jumpOut", false);
+        player.addAnimation("idle", true, 0.5);
+      },
+      error: function (reason) {
+        console.log("spine animation load error", reason);
       },
     });
 
     if (playerContainerRef.current) {
-      // p1.play();
+      p1.play();
     }
 
     return () => {
@@ -39,10 +40,11 @@ export default function CustomSpinePlayer(props: any) {
     <div
       id={`player-container-${position}`}
       ref={playerContainerRef}
-      style={{ width: "100%", height: "100%" }}
-      onMouseDown={(e) => {
-        console.log(e);
+      style={{
+        width: "100%",
+        height: "100%",
       }}
+      onMouseDown={(e) => checkHit(e)}
     />
   );
 }
