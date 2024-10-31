@@ -1,12 +1,21 @@
 import { useEffect, useRef } from "react";
 import { SpinePlayer } from "@esotericsoftware/spine-player";
 
-export default function CustomSpinePlayer(props: any) {
+interface CustomPlayerProps {
+  jsonUrl: string;
+  atlasUrl: string;
+  skin: string;
+  position: number;
+  animationSpeed?: number;
+  // children?: React.ReactNode;
+}
+
+export default function CustomSpinePlayer(props: CustomPlayerProps) {
   const playerContainerRef = useRef(null);
   const { jsonUrl, atlasUrl, skin, position, animationSpeed } = props;
 
-  const checkHit = (e) => {
-    if (e.target) console.log("HIT!");
+  const checkHit = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target) console.log("HIT!");
   };
 
   useEffect(() => {
@@ -44,7 +53,7 @@ export default function CustomSpinePlayer(props: any) {
         width: "100%",
         height: "100%",
       }}
-      onMouseDown={(e) => checkHit(e)}
+      onClick={(event) => checkHit(event)}
     />
   );
 }

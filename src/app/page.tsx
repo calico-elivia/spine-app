@@ -26,8 +26,8 @@ export default function Home() {
   const [gameItem, setGameItem] = useState(gameItemData);
   const [message, setMessage] = useState("");
   const [playing, setPlaying] = useState(false);
-  const [bgAudio, setBgAudio] = useState<any>(null);
-  const audioRef = useRef<any>(null);
+  const [bgAudio, setBgAudio] = useState<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 });
   const [active, setActive] = useState(Array(9).fill(false));
   // const [socket, setSocket] = useState<any>(null);
@@ -120,12 +120,12 @@ export default function Home() {
   //背景音樂播放
   const play = () => {
     setPlaying(true);
-    bgAudio.play();
+    bgAudio?.play();
   };
   //背景音樂暫停
   const pause = () => {
     setPlaying(false);
-    bgAudio.pause();
+    bgAudio?.pause();
   };
 
   // 播放指定音效
