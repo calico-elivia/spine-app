@@ -7,7 +7,8 @@ import { AudioMap, rabbitHolePosition } from "./constant";
 const jsonUrl = "assets/rabbit/test_rabbit_000.json";
 const atlasUrl = "assets/rabbit/test_rabbit_000.atlas";
 const websocktUrl =
-  "ws://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860";
+  // "ws://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860";
+  "ws://8.212.129.247:9090/wcc";
 
 const gameItemData = [
   {
@@ -26,11 +27,11 @@ export default function Home() {
   const [gameItem, setGameItem] = useState(gameItemData);
   const [message, setMessage] = useState("");
   const [playing, setPlaying] = useState(false);
-  const [bgAudio, setBgAudio] = useState<HTMLAudioElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 });
   const [active, setActive] = useState(Array(9).fill(false));
-  // const [socket, setSocket] = useState<any>(null);
+  const [socket, setSocket] = useState<any>(null);
 
   // 自適應畫面大小
   const displayRabbitPosition = () => {
@@ -77,9 +78,11 @@ export default function Home() {
   }, [start]);
 
   useEffect(() => {
-    // 设定背景音乐
-    setBgAudio(new Audio(AudioMap.game));
-    // play();
+    // 获取玩家用户资讯
+    const getUserData = () => {
+      const data = `https://api.telegram.org/bot${process.env.token}/getUpdates`;
+    };
+    console.log(process.env);
     // ws连线成功即开始游戏 开始游戏
     const handleStart = () => {
       // if () {
@@ -92,16 +95,18 @@ export default function Home() {
 
     //ws
     // setSocket(new WebSocket(websocktUrl));
-    // if (!socket) return;
     // const socket = new WebSocket(websocktUrl);
+    // if (!socket) return;
 
-    // socket.onopen = () => {
-    //   console.log("WS Connected");
+    // socket.onopen = (event) => {
+    //   console.log("WS Connected:", event);
     // };
 
     // socket.onmessage = (event) => {
     //   console.log("WS Message:", event);
     // };
+
+    // window.addEventListener("resize", displayRabbitPosition);
 
     // return () => {
     //   console.log("WS Disconnected");
@@ -114,25 +119,31 @@ export default function Home() {
     //     console.log("event.target", event.target);
     //   }
     // });
-    window.addEventListener("resize", displayRabbitPosition);
   }, []);
-
-  //背景音樂播放
-  const play = () => {
-    setPlaying(true);
-    bgAudio?.play();
-  };
-  //背景音樂暫停
-  const pause = () => {
-    setPlaying(false);
-    bgAudio?.pause();
-  };
 
   // 播放指定音效
   const handlePlayAudio = (type: string) => {
     audioRef.current = new Audio(AudioMap[type]);
     audioRef.current.play();
   };
+
+  //背景音樂播放
+  const play = () => {
+    setPlaying(true);
+  };
+  //背景音樂暫停
+  const pause = () => {
+    setPlaying(false);
+  };
+
+  useEffect(() => {
+    if (playing) {
+      bgAudioRef.current = new Audio(AudioMap.game);
+      bgAudioRef.current.play();
+    } else {
+      bgAudioRef.current?.pause();
+    }
+  }, [playing]);
 
   return (
     <div className="content relative">
