@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SpinePlayer } from "@esotericsoftware/spine-player";
 
 interface CustomPlayerProps {
@@ -11,39 +11,66 @@ interface CustomPlayerProps {
 }
 
 export default function CustomSpinePlayer(props: CustomPlayerProps) {
-  const playerContainerRef = useRef(null);
   const { jsonUrl, atlasUrl, skin, position, animationSpeed } = props;
+  const playerContainerRef = useRef(null);
+  const playerRef = useRef<SpinePlayer | null>(null);
+  //判断是否销毁兔宝宝
+  const [finished, setFinished] = useState(false);
 
-  const checkHit = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target) console.log("HIT!");
+  // 擊中
+  const checkHit = (event: React.MouseEvent<HTMLElement>) => {
+    const tar = event.target as HTMLElement;
+    //确定击中兔宝宝
+    if (tar && tar.tagName == "CANVAS") {
+      console.log("HIT!");
+      //播放动画
+      const trackEntry = playerRef.current?.addAnimation("hit", false);
+      if (trackEntry) {
+        trackEntry.listener = {
+          complete: () => setFinished(true),
+        };
+      }
+    }
   };
 
   useEffect(() => {
     // spine動畫
-    const p1 = new SpinePlayer(`player-container-${position}`, {
-      jsonUrl: jsonUrl,
-      atlasUrl: atlasUrl,
-      skin: skin,
-      showControls: false,
-      preserveDrawingBuffer: false,
-      alpha: true, // Enable player translucency
-      success: (player) => {
-        player.setAnimation("jumpOut", false);
-        player.addAnimation("idle", true, 0.5);
-      },
-      error: function (reason) {
-        console.log("spine animation load error", reason);
-      },
-    });
+    if (playerContainerRef.current && !playerRef.current) {
+      const p1 = new SpinePlayer(`player-container-${position}`, {
+        jsonUrl: jsonUrl,
+        atlasUrl: atlasUrl,
+        skin: skin,
+        showControls: false,
+        preserveDrawingBuffer: false,
+        alpha: true, // Enable player translucency
+        success: (player) => {
+          player.setAnimation("jumpOut", false);
+          player.addAnimation("idle", true, 0.5);
+        },
+        error: function (reason) {
+          console.log("spine animation load error", reason);
+        },
+      });
+      playerRef.current = p1;
+    }
 
     if (playerContainerRef.current) {
-      p1.play();
+      playerRef.current?.play();
     }
 
     return () => {
-      p1.dispose();
+      playerRef.current?.dispose();
+      playerRef.current = null;
     };
   }, []);
+
+  // 销毁兔宝宝
+  useEffect(() => {
+    if (finished) {
+      playerRef.current?.dispose();
+      playerRef.current = null;
+    }
+  }, [finished]);
 
   return (
     <div
