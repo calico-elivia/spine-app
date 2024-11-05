@@ -6,7 +6,8 @@ import { AudioMap, spineAssets, rabbitHolePosition } from './constant'
 import CustomSpinePlayer from './components/SpinePlayer'
 
 const websocktUrl =
-  'ws://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860'
+  'wss://8.212.129.247:9090?chatId=1234&chatName=chat&refer=1234567'
+// 'wss://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860'
 // "ws://8.212.129.247:9090/wcc";
 
 const gameItemData = [
