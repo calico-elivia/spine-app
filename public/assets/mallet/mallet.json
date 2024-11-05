@@ -1,0 +1,107 @@
+{
+"skeleton": { "hash": "ChMsVwqNokI", "spine": "4.1.24", "x": -67, "y": -57, "width": 134, "height": 114 },
+"bones": [
+	{ "name": "root" },
+	{ "name": "mallet/mallet", "parent": "root", "length": 60.73, "rotation": 145.44, "x": 47.42, "y": -36.92 },
+	{ "name": "mallet/vfx/smash_01", "parent": "root", "length": 36.12, "x": -44.43, "y": 13.06 }
+],
+"slots": [
+	{ "name": "mallet/mallet", "bone": "mallet/mallet", "attachment": "mallet/mallet" },
+	{ "name": "mallet/vfx/smash_01", "bone": "mallet/vfx/smash_01" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"mallet/mallet": {
+				"mallet/mallet": { "x": 60, "y": -3.5, "rotation": -145.44, "width": 134, "height": 114 }
+			},
+			"mallet/vfx/smash_01": {
+				"mallet/vfx/smash_01": { "x": 44.43, "y": -13.06, "scaleX": -1, "rotation": -90, "width": 90, "height": 134 },
+				"mallet/vfx/smash_02": { "x": 24.5, "y": -10, "scaleX": -1, "rotation": -90, "width": 83, "height": 96 }
+			}
+		}
+	}
+],
+"animations": {
+	"hit": {
+		"slots": {
+			"mallet/vfx/smash_01": {
+				"rgba": [
+					{ "time": 0.2, "color": "ffffffff" },
+					{ "time": 0.2667, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0.1333, "name": "mallet/vfx/smash_01" },
+					{ "time": 0.2, "name": "mallet/vfx/smash_02" }
+				]
+			}
+		},
+		"bones": {
+			"mallet/mallet": {
+				"rotate": [
+					{
+						"curve": [ 0.061, 39.77, 0.1, -107.91 ]
+					},
+					{
+						"time": 0.1,
+						"value": -96.78,
+						"curve": [ 0.1, 16.8, 0.13, 43.26 ]
+					},
+					{
+						"time": 0.2,
+						"value": 50.03,
+						"curve": [ 0.265, 56.27, 0.325, 40.56 ]
+					},
+					{ "time": 0.3333, "value": 37.33 }
+				],
+				"translate": [
+					{ "curve": "stepped" },
+					{ "time": 0.1 }
+				],
+				"scale": [
+					{
+						"x": 0.95,
+						"y": 0.95,
+						"curve": [ 0.036, 0.95, 0.064, 0.9, 0.036, 0.95, 0.064, 0.9 ]
+					},
+					{
+						"time": 0.1,
+						"x": 0.9,
+						"y": 0.9,
+						"curve": [ 0.136, 0.9, 0.164, 1, 0.136, 0.9, 0.164, 1 ]
+					},
+					{ "time": 0.2 }
+				],
+				"shear": [
+					{
+						"curve": [ 0.036, 0, 0.064, -17.64, 0.036, 0, 0.064, -23.21 ]
+					},
+					{
+						"time": 0.1,
+						"x": -17.64,
+						"y": -23.21,
+						"curve": [ 0.136, -17.64, 0.164, 0, 0.136, -23.21, 0.164, 0 ]
+					},
+					{ "time": 0.2 }
+				]
+			},
+			"mallet/vfx/smash_01": {
+				"rotate": [
+					{ "time": 0.1333, "value": -6.53 },
+					{ "time": 0.1667, "value": 29.8 },
+					{ "time": 0.2, "value": 43.62 }
+				],
+				"translate": [
+					{ "time": 0.1333, "x": 56.1, "y": 18.54 },
+					{ "time": 0.1667, "x": 7.79, "y": -8.3 },
+					{ "time": 0.2, "x": 0.47, "y": -37.09 }
+				],
+				"scale": [
+					{ "time": 0.1333, "x": 1.143 }
+				]
+			}
+		}
+	}
+}
+}

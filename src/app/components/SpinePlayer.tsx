@@ -1,86 +1,71 @@
-import { useEffect, useRef, useState } from "react";
-import { SpinePlayer } from "@esotericsoftware/spine-player";
+import { useEffect, useRef } from 'react'
+import { SpinePlayer } from '@esotericsoftware/spine-player'
 
 interface CustomPlayerProps {
-  jsonUrl: string;
-  atlasUrl: string;
-  skin: string;
-  position: number;
-  animationSpeed?: number;
+  jsonUrl: string
+  atlasUrl: string
+  mousePosition: {
+    x: number
+    y: number
+  } | null
+  setMousePosition: React.Dispatch<
+    React.SetStateAction<{
+      x: number
+      y: number
+    } | null>
+  >
   // children?: React.ReactNode;
 }
 
 export default function CustomSpinePlayer(props: CustomPlayerProps) {
-  const { jsonUrl, atlasUrl, skin, position, animationSpeed } = props;
-  const playerContainerRef = useRef(null);
-  const playerRef = useRef<SpinePlayer | null>(null);
-  //判断是否销毁兔宝宝
-  const [finished, setFinished] = useState(false);
-
-  // 擊中
-  const checkHit = (event: React.MouseEvent<HTMLElement>) => {
-    const tar = event.target as HTMLElement;
-    //确定击中兔宝宝
-    if (tar && tar.tagName == "CANVAS") {
-      console.log("HIT!");
-      //播放动画
-      const trackEntry = playerRef.current?.addAnimation("hit", false);
-      if (trackEntry) {
-        trackEntry.listener = {
-          complete: () => setFinished(true),
-        };
-      }
-    }
-  };
+  const { jsonUrl, atlasUrl, mousePosition, setMousePosition } = props
+  const playerContainerRef = useRef(null)
 
   useEffect(() => {
     // spine動畫
-    if (playerContainerRef.current && !playerRef.current) {
-      const p1 = new SpinePlayer(`player-container-${position}`, {
-        jsonUrl: jsonUrl,
-        atlasUrl: atlasUrl,
-        skin: skin,
-        showControls: false,
-        preserveDrawingBuffer: false,
-        alpha: true, // Enable player translucency
-        success: (player) => {
-          player.setAnimation("jumpOut", false);
-          player.addAnimation("idle", true, 0.5);
-        },
-        error: function (reason) {
-          console.log("spine animation load error", reason);
-        },
-      });
-      playerRef.current = p1;
-    }
+    const p1 = new SpinePlayer(`player-container`, {
+      jsonUrl: jsonUrl,
+      atlasUrl: atlasUrl,
+      skin: 'default',
+      showControls: false,
+      showLoading: false,
+      preserveDrawingBuffer: false,
+      alpha: true,
+      success: player => {
+        const trackEntry = player?.setAnimation('hit', false)
+        if (trackEntry) {
+          trackEntry.listener = {
+            complete: () => setMousePosition(null),
+          }
+        }
+      },
+      error: function (reason) {
+        console.log('spine animation load error', reason)
+      },
+    })
 
     if (playerContainerRef.current) {
-      playerRef.current?.play();
+      p1.play()
     }
 
     return () => {
-      playerRef.current?.dispose();
-      playerRef.current = null;
-    };
-  }, []);
-
-  // 销毁兔宝宝
-  useEffect(() => {
-    if (finished) {
-      playerRef.current?.dispose();
-      playerRef.current = null;
+      p1?.dispose()
     }
-  }, [finished]);
+  }, [])
 
   return (
     <div
-      id={`player-container-${position}`}
+      id={`player-container`}
       ref={playerContainerRef}
       style={{
-        width: "100%",
-        height: "100%",
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        top: mousePosition?.y,
+        left: mousePosition?.x,
+        transform: 'translate(-25%, -50%)',
+        pointerEvents: 'none',
       }}
-      onClick={(event) => checkHit(event)}
     />
-  );
+  )
 }

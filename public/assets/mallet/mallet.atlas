@@ -1,0 +1,12 @@
+mallet.png
+size:294,122
+filter:Linear,Linear
+mallet/mallet
+bounds:2,8,132,112
+offsets:1,1,134,114
+mallet/vfx/smash_01
+bounds:136,2,80,118
+offsets:7,6,90,134
+mallet/vfx/smash_02
+bounds:218,41,74,79
+offsets:6,8,83,96

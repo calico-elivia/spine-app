@@ -1,14 +1,25 @@
 type mapType = {
-  [key: string]: string;
-};
+  [key: string]: string
+}
 
 export const AudioMap: mapType = {
-  game: "audio/game_music.ogg",
-  gamePass: "audio/game_pass.ogg",
-  noHit: "audio/no_hit.ogg",
-  overMusic: "audio/over_music.ogg",
-  secondMusic: "audio/second_music.ogg",
-};
+  game: 'audio/game_music.ogg',
+  gamePass: 'audio/game_pass.ogg',
+  noHit: 'audio/no_hit.ogg',
+  overMusic: 'audio/over_music.ogg',
+  secondMusic: 'audio/second_music.ogg',
+}
+
+export const spineAssets = {
+  rabbit: {
+    jsonUrl: 'assets/rabbit/test_rabbit_000.json',
+    atlasUrl: 'assets/rabbit/test_rabbit_000.atlas',
+  },
+  mallet: {
+    jsonUrl: 'assets/mallet/mallet.json',
+    atlasUrl: 'assets/mallet/mallet.atlas',
+  },
+}
 
 export const rabbitHolePosition = [
   {
@@ -47,4 +58,4 @@ export const rabbitHolePosition = [
     left: 445,
     top: 550,
   },
-];
+]

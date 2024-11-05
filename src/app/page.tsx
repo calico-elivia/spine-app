@@ -1,164 +1,260 @@
-"use client"; //
-import { useCallback, useEffect, useRef, useState } from "react";
-import CustomSpinePlayer from "./components/SpinePlayer";
-import "./page.scss";
-import { AudioMap, rabbitHolePosition } from "./constant";
+'use client' //
+import { useCallback, useEffect, useRef, useState } from 'react'
+import RabbitSpinePlayer from './components/RabbitSpinePlayer'
+import './page.scss'
+import { AudioMap, spineAssets, rabbitHolePosition } from './constant'
+import CustomSpinePlayer from './components/SpinePlayer'
 
-const jsonUrl = "assets/rabbit/test_rabbit_000.json";
-const atlasUrl = "assets/rabbit/test_rabbit_000.atlas";
 const websocktUrl =
-  // "ws://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860";
-  "ws://8.212.129.247:9090/wcc";
+  'ws://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860'
+// "ws://8.212.129.247:9090/wcc";
 
 const gameItemData = [
   {
     id: 1,
-    name: "加速器",
-    icon: "",
+    name: '加速器',
+    icon: '',
   },
-];
+]
+const socket = new WebSocket(websocktUrl)
 
 export default function Home() {
-  const [start, setStart] = useState<boolean | null>(null);
-  const [score, setScore] = useState<number>(0);
-  const [coin, setCoin] = useState<number>(0);
-  const [showPrize, setShowPrize] = useState<boolean>(false);
-  const [showGameItem, setShowGameItem] = useState(false);
-  const [gameItem, setGameItem] = useState(gameItemData);
-  const [message, setMessage] = useState("");
-  const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
-  const [screenSize, setScreenSize] = useState({ x: 0, y: 0 });
-  const [active, setActive] = useState(Array(9).fill(false));
-  const [socket, setSocket] = useState<any>(null);
+  // 螢幕尺寸
+  const [screenSize, setScreenSize] = useState({ x: 0, y: 0 })
+  // 遊戲項目
+  const [score, setScore] = useState<string>('0')
+  const [active, setActive] = useState(
+    Array(9).fill({ status: false, data: null })
+  )
+  const [coin, setCoin] = useState<number>(0)
+  const [showPrize, setShowPrize] = useState<boolean>(false)
+  const [showGameItem, setShowGameItem] = useState(false)
+  const [gameItem, setGameItem] = useState(gameItemData)
+  const [message, setMessage] = useState('')
+  //音效
+  const [playing, setPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null)
+  //動畫
+  const [mousePosition, setMousePosition] = useState<{
+    x: number
+    y: number
+  } | null>(null)
 
   // 自適應畫面大小
   const displayRabbitPosition = () => {
     // 原始背景圖大小
-    const defaultWidth = 640;
-    const defaultHeight = 982;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const result = { x: width / defaultWidth, y: height / defaultHeight };
-    setScreenSize(result);
-  };
+    const defaultWidth = 640
+    const defaultHeight = 982
+    const width = window.innerWidth
+    const height = window.innerHeight
+    const result = { x: width / defaultWidth, y: height / defaultHeight }
+    setScreenSize(result)
+  }
 
-  // 判斷後端給的是第幾個洞
+  // 觸發兔子動畫
   const triggerRabbit = useCallback(
     (index: number) => {
-      if (index == null) return;
-      return active[index];
-      // const x = 1;
-      // const y = 1;
-      // const result = (y - 1) * 3 + (x - 1);
+      if (index == null) return null
+      const level = active[index]?.data?.level || 1
+
+      if (active[index]?.status) {
+        return (
+          <RabbitSpinePlayer
+            jsonUrl={spineAssets.rabbit.jsonUrl}
+            atlasUrl={spineAssets.rabbit.atlasUrl}
+            skin={String(level).padStart(3, '0')}
+            position={index}
+            animationSpeed={1}
+            socket={socket}
+          />
+        )
+      }
     },
     [active]
-  );
+  )
+
+  // 更新總分
+  const updateScore = (newScore: string) => {
+    setScore(prevScore => {
+      // 檢查新的分數與舊的分數是否相同
+      if (prevScore === newScore) {
+        return prevScore // 如果相同，直接回傳舊的分數
+      }
+      return newScore // 否則，更新為新的分數
+    })
+  }
+
+  //websocket msg解析
+  const replayMap = (replay: string, data: any) => {
+    switch (replay) {
+      case 'login_ok_response':
+        // socket.send(
+        //   JSON.stringify({
+        //     event: "run",
+        //   })
+        // );
+        break
+      case 'fail':
+        break
+      case 'prize_response': {
+        let x = data.x
+        let y = data.y
+        let result = y * 3 + x
+        let targetTimestamp = data.expire
+        let currentTimestamp = Date.now()
+        const delay = targetTimestamp - currentTimestamp
+
+        setActive(prevActive =>
+          prevActive.map((item, index) =>
+            index === result
+              ? {
+                  status: true,
+                  data: item.data,
+                }
+              : item
+          )
+        )
+        setTimeout(
+          () => {
+            setActive(prevActive =>
+              prevActive.map((item, index) =>
+                index === result
+                  ? {
+                      status: false,
+                      data: null,
+                    }
+                  : item
+              )
+            )
+          },
+          delay > 0 ? delay : 1500
+        )
+        break
+      }
+      case 'click_ok_response':
+        updateScore(data.total_amount)
+        break
+      case 'click_fail_response':
+        updateScore(data.total_amount)
+        break
+      default:
+        break
+    }
+  }
 
   useEffect(() => {
-    if (!start) return;
-    const interval = setInterval(() => {
-      const ram = Math.floor(Math.random() * 9);
-      setActive((prevActive) => {
-        const newActive = [...prevActive];
-        newActive[ram] = true; // 將隨機位置設為 true
-        return newActive;
-      });
-
-      setTimeout(() => {
-        setActive((prevActive) => {
-          const newActive = [...prevActive];
-          newActive[ram] = false;
-          return newActive;
-        });
-      }, 1500);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [start]);
-
-  useEffect(() => {
-    // 获取玩家用户资讯
-    const getUserData = () => {
-      const data = `https://api.telegram.org/bot${process.env.token}/getUpdates`;
-    };
-    console.log(process.env);
-    // ws连线成功即开始游戏 开始游戏
-    const handleStart = () => {
-      // if () {
-      setMessage("连线失败");
-      // }
-      setStart(true);
-    };
-
-    displayRabbitPosition();
+    // 更新兔子位置
+    displayRabbitPosition()
 
     //ws
-    // setSocket(new WebSocket(websocktUrl));
-    // const socket = new WebSocket(websocktUrl);
-    // if (!socket) return;
+    socket.onopen = event => {
+      console.log('WS Connected:', event)
+    }
 
-    // socket.onopen = (event) => {
-    //   console.log("WS Connected:", event);
-    // };
+    socket.onmessage = event => {
+      //解讀ws event
+      let file = new Blob([event.data], { type: 'application/json' })
+      file
+        .text()
+        .then(value => {
+          let val = JSON.parse(value)
+          val.data = JSON.parse(val.data)
+          if (val.code == 200) {
+            console.log(val)
+            replayMap(val.replay, val.data)
+          } else {
+            console.log('Error Message:', val)
+          }
+        })
+        .catch(error => {
+          console.log('Something went wrong', JSON.stringify(error))
+        })
+    }
 
-    // socket.onmessage = (event) => {
-    //   console.log("WS Message:", event);
-    // };
+    window.addEventListener('resize', displayRabbitPosition)
+    window.addEventListener('click', event => {
+      setMousePosition({ x: event.clientX, y: event.clientY })
+    })
 
-    // window.addEventListener("resize", displayRabbitPosition);
+    // 心跳
+    const interval = setInterval(() => {
+      console.log('heart beat!')
+      socket.send(
+        JSON.stringify({
+          event: 'heart', //心跳
+        })
+      )
+    }, 30000)
 
-    // return () => {
-    //   console.log("WS Disconnected");
-    //   socket?.close();
-    // };
-
-    // 監聽click事件
-    // document.addEventListener("click", (event) => {
-    //   if (start) {
-    //     console.log("event.target", event.target);
-    //   }
-    // });
-  }, []);
+    return () => {
+      window.removeEventListener('resize', displayRabbitPosition)
+      console.log('WS Disconnected')
+      socket?.close()
+      clearInterval(interval)
+    }
+  }, [])
 
   // 播放指定音效
   const handlePlayAudio = (type: string) => {
-    audioRef.current = new Audio(AudioMap[type]);
-    audioRef.current.play();
-  };
+    audioRef.current = new Audio(AudioMap[type])
+    audioRef.current.play()
+  }
 
   //背景音樂播放
   const play = () => {
-    setPlaying(true);
-  };
+    setPlaying(true)
+  }
   //背景音樂暫停
   const pause = () => {
-    setPlaying(false);
-  };
+    setPlaying(false)
+  }
 
   useEffect(() => {
     if (playing) {
-      bgAudioRef.current = new Audio(AudioMap.game);
-      bgAudioRef.current.play();
+      bgAudioRef.current = new Audio(AudioMap.game)
+      bgAudioRef.current.play()
     } else {
-      bgAudioRef.current?.pause();
+      bgAudioRef.current?.pause()
     }
-  }, [playing]);
+  }, [playing])
 
   return (
     <div className="content relative">
       <div className="header flex-1">
         <div className="flex">
           <div className="mr-5">Score: {score}</div>
-          <div className="mr-5">Coin: {coin}</div>
+          {/* <div className="mr-5">Coin: {coin}</div> */}
         </div>
         <div className="topFixBtns">
           <button onClick={playing ? pause : play}>
-            {playing ? "Pause" : "Play"}
+            {playing ? '音效off' : '音效on'}
           </button>
-          <button onClick={() => setStart(!start)}>
-            {start ? "Stop" : "Start"}
-          </button>
+          <div>
+            <button
+              onClick={() => {
+                socket.send(
+                  JSON.stringify({
+                    event: 'run',
+                  })
+                )
+              }}
+            >
+              {'START'}
+            </button>
+            <span>{'  '}</span>
+            <button
+              onClick={() => {
+                socket.send(
+                  JSON.stringify({
+                    event: 'pause',
+                  })
+                )
+              }}
+            >
+              {'PAUSE'}
+            </button>
+          </div>
           <button onClick={() => setShowGameItem(true)}>加速器</button>
         </div>
       </div>
@@ -175,18 +271,9 @@ export default function Home() {
               }}
               key={index}
             >
-              {/* {index == 0 && ( */}
-              {triggerRabbit(index) && (
-                <CustomSpinePlayer
-                  jsonUrl={jsonUrl}
-                  atlasUrl={atlasUrl}
-                  skin={"004"}
-                  position={index}
-                  animationSpeed={1}
-                />
-              )}
+              {triggerRabbit(index)}
             </div>
-          );
+          )
         })}
       </div>
       <div className="footer">
@@ -199,7 +286,7 @@ export default function Home() {
         <div className="messageModal">
           <button
             className="closeBtn absolute -top-3 -right-3"
-            onClick={() => setMessage("")}
+            onClick={() => setMessage('')}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -243,7 +330,7 @@ export default function Home() {
               </svg>
             </button>
             <div className="gameItemList grid grid-cols-3 gap-3">
-              {gameItem.map((item) => (
+              {gameItem.map(item => (
                 <div className="gameItem" key={item.id}>
                   {item.name}
                 </div>
@@ -252,6 +339,14 @@ export default function Home() {
           </div>
         </div>
       )}
+      {mousePosition && (
+        <CustomSpinePlayer
+          jsonUrl={spineAssets.mallet.jsonUrl}
+          atlasUrl={spineAssets.mallet.atlasUrl}
+          mousePosition={mousePosition}
+          setMousePosition={setMousePosition}
+        />
+      )}
     </div>
-  );
+  )
 }
