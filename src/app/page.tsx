@@ -86,7 +86,10 @@ export default function Home() {
   }
 
   //websocket msg解析
-  const replayMap = (replay: string, data: any) => {
+  const replayMap = (
+    replay: string,
+    data: { [key: string]: number | string }
+  ) => {
     switch (replay) {
       case 'login_ok_response':
         // socket.send(
@@ -98,11 +101,11 @@ export default function Home() {
       case 'fail':
         break
       case 'prize_response': {
-        let x = data.x
-        let y = data.y
-        let result = y * 3 + x
-        let targetTimestamp = data.expire
-        let currentTimestamp = Date.now()
+        const x = +data.x
+        const y = +data.y
+        const result = y * 3 + x
+        const targetTimestamp = +data.expire
+        const currentTimestamp = Date.now()
         const delay = targetTimestamp - currentTimestamp
 
         setActive(prevActive =>
@@ -133,10 +136,10 @@ export default function Home() {
         break
       }
       case 'click_ok_response':
-        updateScore(data.total_amount)
+        updateScore(data.total_amount.toString())
         break
       case 'click_fail_response':
-        updateScore(data.total_amount)
+        updateScore(data.total_amount.toString())
         break
       default:
         break
@@ -154,11 +157,11 @@ export default function Home() {
 
     socket.onmessage = event => {
       //解讀ws event
-      let file = new Blob([event.data], { type: 'application/json' })
+      const file = new Blob([event.data], { type: 'application/json' })
       file
         .text()
         .then(value => {
-          let val = JSON.parse(value)
+          const val = JSON.parse(value)
           val.data = JSON.parse(val.data)
           if (val.code == 200) {
             console.log(val)
