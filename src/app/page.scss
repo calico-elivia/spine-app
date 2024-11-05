@@ -37,17 +37,13 @@
       width: 23%;
     }
   }
-  .prizeModal {
+  .prizeText {
     position: absolute;
-    left: 50%;
-    bottom: 15%;
-    transform: translateX(-50%);
-    text-align: center;
-    .prizeText {
-      font-size: 2rem;
-      font-weight: 900;
-      text-shadow: #3e3e3e 2px 2px;
-    }
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #dc2626;
+    text-shadow: #fff 2px 2px;
+    transform: translate(-50%, -100%);
   }
   .messageModal {
     width: 75vw;

@@ -35,11 +35,12 @@ export default function RabbitSpinePlayer(props: CustomPlayerProps) {
       // 計算x,y軸位置
       const x = position % 3
       const y = Math.floor(position / 3)
+
       // 推送後端
       socket.send(
         JSON.stringify({
           event: 'click',
-          data: { x: x, y: y },
+          data: JSON.stringify({ x: x, y: y }),
         })
       )
     }

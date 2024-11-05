@@ -5,10 +5,7 @@ import './page.scss'
 import { AudioMap, spineAssets, rabbitHolePosition } from './constant'
 import CustomSpinePlayer from './components/SpinePlayer'
 
-const websocktUrl =
-  'wss://8.212.129.247:9090?chatId=1234&chatName=chat&refer=1234567'
-// 'wss://8.212.129.247:9090/wcc?chatId=54017868&chatName=chacha&refer=54017860'
-// "ws://8.212.129.247:9090/wcc";
+const websocktUrl = 'wss://m.wlp.asia/wcc?chatId=123&chatName=chat'
 
 const gameItemData = [
   {
@@ -23,12 +20,12 @@ export default function Home() {
   // 螢幕尺寸
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 })
   // 遊戲項目
-  const [score, setScore] = useState<string>('0')
+  const [score, setScore] = useState<number>(0)
+  const [bonus, setBonus] = useState<number>(0)
   const [active, setActive] = useState(
     Array(9).fill({ status: false, data: null })
   )
   const [coin, setCoin] = useState<number>(0)
-  const [showPrize, setShowPrize] = useState<boolean>(false)
   const [showGameItem, setShowGameItem] = useState(false)
   const [gameItem, setGameItem] = useState(gameItemData)
   const [message, setMessage] = useState('')
@@ -37,6 +34,7 @@ export default function Home() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const bgAudioRef = useRef<HTMLAudioElement | null>(null)
   //動畫
+  const holeWrapRef = useRef<HTMLDivElement | null>(null)
   const [mousePosition, setMousePosition] = useState<{
     x: number
     y: number
@@ -76,7 +74,7 @@ export default function Home() {
   )
 
   // 更新總分
-  const updateScore = (newScore: string) => {
+  const updateScore = (newScore: number) => {
     setScore(prevScore => {
       // 檢查新的分數與舊的分數是否相同
       if (prevScore === newScore) {
@@ -87,11 +85,11 @@ export default function Home() {
   }
 
   //websocket msg解析
-  const replayMap = (
-    replay: string,
+  const replyMap = (
+    reply: string,
     data: { [key: string]: number | string }
   ) => {
-    switch (replay) {
+    switch (reply) {
       case 'login_ok_response':
         // socket.send(
         //   JSON.stringify({
@@ -137,10 +135,12 @@ export default function Home() {
         break
       }
       case 'click_ok_response':
-        updateScore(data.total_amount.toString())
+        updateScore(Number(data.total_amount))
+        setBonus(Number(data.bonus_amount))
         break
       case 'click_fail_response':
-        updateScore(data.total_amount.toString())
+        updateScore(Number(data.total_amount))
+        setBonus(Number(data.bonus_amount))
         break
       default:
         break
@@ -158,28 +158,42 @@ export default function Home() {
 
     socket.onmessage = event => {
       //解讀ws event
-      const file = new Blob([event.data], { type: 'application/json' })
-      file
-        .text()
-        .then(value => {
-          const val = JSON.parse(value)
-          val.data = JSON.parse(val.data)
-          if (val.code == 200) {
-            console.log(val)
-            replayMap(val.replay, val.data)
-          } else {
-            console.log('Error Message:', val)
-          }
-        })
-        .catch(error => {
-          console.log('Something went wrong', JSON.stringify(error))
-        })
+      if (event.data instanceof Blob) {
+        const file = new Blob([event.data], { type: 'text/plain' })
+        file
+          .text()
+          .then(value => {
+            const val = JSON.parse(value)
+            val.data = JSON.parse(val.data)
+            if (val.code == 200) {
+              replyMap(val.reply, val.data)
+            } else {
+              console.log('Error Message:', val)
+            }
+          })
+          .catch(error => {
+            console.log('Something went wrong', error)
+          })
+      } else {
+        const res = JSON.parse(event.data)
+        console.log('res', res)
+        if (res.code === 200) {
+          replyMap(res.reply, res.data)
+        }
+      }
     }
 
     window.addEventListener('resize', displayRabbitPosition)
-    window.addEventListener('click', event => {
-      setMousePosition({ x: event.clientX, y: event.clientY })
-    })
+
+    //錘子監聽
+    const holeWrap = holeWrapRef.current
+    if (holeWrap) {
+      holeWrap.addEventListener('click', event => {
+        if (holeWrap && holeWrap.contains(event.target as HTMLElement)) {
+          setMousePosition({ x: event.clientX, y: event.clientY })
+        }
+      })
+    }
 
     // 心跳
     const interval = setInterval(() => {
@@ -189,7 +203,7 @@ export default function Home() {
           event: 'heart', //心跳
         })
       )
-    }, 30000)
+    }, 15000)
 
     return () => {
       window.removeEventListener('resize', displayRabbitPosition)
@@ -248,13 +262,13 @@ export default function Home() {
             </button>
             <span>{'  '}</span>
             <button
-              onClick={() => {
+              onClick={() =>
                 socket.send(
                   JSON.stringify({
                     event: 'pause',
                   })
                 )
-              }}
+              }
             >
               {'PAUSE'}
             </button>
@@ -262,7 +276,7 @@ export default function Home() {
           <button onClick={() => setShowGameItem(true)}>加速器</button>
         </div>
       </div>
-      <div className="holeWrap">
+      <div className="holeWrap" ref={holeWrapRef}>
         {rabbitHolePosition.map((hole, index) => {
           return (
             <div
@@ -286,6 +300,7 @@ export default function Home() {
         <div className="footerBtn">Exchange</div>
         <div className="footerBtn">Invite</div>
       </div>
+      {/* 提示彈窗 */}
       {message && (
         <div className="messageModal">
           <button
@@ -310,6 +325,7 @@ export default function Home() {
           <div className="messageText">{message}</div>
         </div>
       )}
+      {/* 加速器道具 */}
       {showGameItem && (
         <div>
           <div className="mask absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-25 overflow-hidden"></div>
@@ -343,6 +359,7 @@ export default function Home() {
           </div>
         </div>
       )}
+      {/* 錘子特效 */}
       {mousePosition && (
         <CustomSpinePlayer
           jsonUrl={spineAssets.mallet.jsonUrl}
@@ -351,6 +368,13 @@ export default function Home() {
           setMousePosition={setMousePosition}
         />
       )}
+      {/* 得分特效 */}
+      {bonus ? (
+        <div
+          className="prizeText"
+          style={{ left: mousePosition?.x, top: mousePosition?.y }}
+        >{`+${bonus}`}</div>
+      ) : null}
     </div>
   )
 }

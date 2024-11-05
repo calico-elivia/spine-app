@@ -33,6 +33,7 @@ export default function CustomSpinePlayer(props: CustomPlayerProps) {
       alpha: true,
       success: player => {
         const trackEntry = player?.setAnimation('hit', false)
+        trackEntry.timeScale = 0.7
         if (trackEntry) {
           trackEntry.listener = {
             complete: () => setMousePosition(null),
