@@ -16,6 +16,17 @@ const gameItemData = [
 ]
 const socket = new WebSocket(websocktUrl)
 
+interface ResData {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | string[]
+    | {
+        [key: string]: string | number | boolean | string[]
+      }
+}
+
 export default function Home() {
   // 螢幕尺寸
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 })
@@ -26,9 +37,11 @@ export default function Home() {
     Array(9).fill({ status: false, data: null })
   )
   const [coin, setCoin] = useState<number>(0)
-  const [showGameItem, setShowGameItem] = useState(false)
-  const [gameItem, setGameItem] = useState(gameItemData)
+  // const [showGameItem, setShowGameItem] = useState(false)
+  // const [gameItem, setGameItem] = useState(gameItemData)
   const [message, setMessage] = useState('')
+
+  const [userInfo, setUserInfo] = useState<ResData>({})
   //音效
   const [playing, setPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -85,12 +98,12 @@ export default function Home() {
   }
 
   //websocket msg解析
-  const replyMap = (
-    reply: string,
-    data: { [key: string]: number | string }
-  ) => {
+  const replyMap = (reply: string, data: ResData) => {
     switch (reply) {
       case 'login_ok_response':
+        console.log('data', data)
+        setCoin(data.customer.gold_amount)
+        setUserInfo(data)
         // socket.send(
         //   JSON.stringify({
         //     event: "run",
@@ -135,9 +148,6 @@ export default function Home() {
         break
       }
       case 'click_ok_response':
-        updateScore(Number(data.total_amount))
-        setBonus(Number(data.bonus_amount))
-        break
       case 'click_fail_response':
         updateScore(Number(data.total_amount))
         setBonus(Number(data.bonus_amount))
@@ -157,6 +167,7 @@ export default function Home() {
     }
 
     socket.onmessage = event => {
+      console.log('event', event)
       //解讀ws event
       if (event.data instanceof Blob) {
         const file = new Blob([event.data], { type: 'text/plain' })
@@ -165,6 +176,7 @@ export default function Home() {
           .then(value => {
             const val = JSON.parse(value)
             val.data = JSON.parse(val.data)
+            console.log('val', val)
             if (val.code == 200) {
               replyMap(val.reply, val.data)
             } else {
@@ -196,22 +208,49 @@ export default function Home() {
     }
 
     // 心跳
-    const interval = setInterval(() => {
-      console.log('heart beat!')
-      socket.send(
-        JSON.stringify({
-          event: 'heart', //心跳
-        })
-      )
-    }, 15000)
+    // const interval = setInterval(() => {
+    //   console.log('heart beat!')
+    //   socket.send(
+    //     JSON.stringify({
+    //       event: 'heart',
+    //     })
+    //   )
+    // }, 15000)
 
     return () => {
       window.removeEventListener('resize', displayRabbitPosition)
       console.log('WS Disconnected')
       socket?.close()
-      clearInterval(interval)
+      // clearInterval(interval)
     }
   }, [])
+
+  // 加速器
+  const handleSpeedUp = () => {
+    socket.send(
+      JSON.stringify({
+        event: 'speed',
+      })
+    )
+  }
+  // 升級
+  const handleUpgrade = () => {
+    if (userInfo.customer.next_level_gold < coin) {
+      socket.send(
+        JSON.stringify({
+          event: 'upgrade',
+        })
+      )
+    }
+  }
+  // 邀請
+  const handleInvite = () => {
+    socket.send(
+      JSON.stringify({
+        event: 'invite',
+      })
+    )
+  }
 
   // 播放指定音效
   const handlePlayAudio = (type: string) => {
@@ -273,7 +312,7 @@ export default function Home() {
               {'PAUSE'}
             </button>
           </div>
-          <button onClick={() => setShowGameItem(true)}>加速器</button>
+          <button onClick={handleSpeedUp}>加速器</button>
         </div>
       </div>
       <div className="holeWrap" ref={holeWrapRef}>
@@ -296,7 +335,9 @@ export default function Home() {
       </div>
       <div className="footer">
         <div className="footerBtn">Mission</div>
-        <div className="footerBtn">Upgrade</div>
+        <div className="footerBtn" onClick={handleUpgrade}>
+          Upgrade
+        </div>
         <div className="footerBtn">Exchange</div>
         <div className="footerBtn">Invite</div>
       </div>
@@ -326,7 +367,7 @@ export default function Home() {
         </div>
       )}
       {/* 加速器道具 */}
-      {showGameItem && (
+      {/* {showGameItem && (
         <div>
           <div className="mask absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-25 overflow-hidden"></div>
           <div className="gameItemModal relative">
@@ -358,7 +399,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
       {/* 錘子特效 */}
       {mousePosition && (
         <CustomSpinePlayer
