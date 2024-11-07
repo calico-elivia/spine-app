@@ -101,8 +101,7 @@ export default function Home() {
   const replyMap = (reply: string, data: ResData) => {
     switch (reply) {
       case 'login_ok_response':
-        console.log('data', data)
-        setCoin(data.customer.gold_amount)
+        setScore(+data.customer.gold_amount)
         setUserInfo(data)
         // socket.send(
         //   JSON.stringify({
@@ -167,7 +166,6 @@ export default function Home() {
     }
 
     socket.onmessage = event => {
-      console.log('event', event)
       //解讀ws event
       if (event.data instanceof Blob) {
         const file = new Blob([event.data], { type: 'text/plain' })
@@ -178,7 +176,7 @@ export default function Home() {
             val.data = JSON.parse(val.data)
             console.log('val', val)
             if (val.code == 200) {
-              replyMap(val.reply, val.data)
+              replyMap(val.replay, val.data)
             } else {
               console.log('Error Message:', val)
             }
@@ -188,9 +186,10 @@ export default function Home() {
           })
       } else {
         const res = JSON.parse(event.data)
+        res.data = JSON.parse(res.data)
         console.log('res', res)
         if (res.code === 200) {
-          replyMap(res.reply, res.data)
+          replyMap(res.replay, res.data)
         }
       }
     }
