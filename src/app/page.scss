@@ -8,12 +8,40 @@
     no-repeat;
   .header {
     height: 10vh;
-    .topFixBtns {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: end;
-      z-index: 99;
+    padding: 4.5% 3%;
+    .topBar {
+      width: 46.5%;
+      font-size: 1.6rem;
+      color: #fff;
+      background: url('/assets/img/frames/ui_frame_0.png') center / 100% auto
+        no-repeat;
+      .coinIcon {
+        width: 46px;
+        height: 46px;
+      }
+      .goldText {
+        align-self: end;
+      }
+      .plusBtn {
+        width: 36px;
+        height: 34px;
+        background: url('/assets/img/icons/i_plus.png') center / 20px 20px
+            no-repeat,
+          url('/assets/img/frames/ui_frame_1.png') center / contain no-repeat;
+      }
+      .speedBtn {
+        width: 40px;
+        height: 38px;
+        background: url('/assets/img/icons/i_speedUp.png') center / contain
+            no-repeat,
+          url('/assets/img/frames/ui_frame_2.png') center / contain no-repeat;
+      }
+    }
+    .audioBtn {
+      width: 48px;
+      height: 46px;
+      background: url('/assets/img/frames/ui_frame_3.png') center / contain
+        no-repeat;
     }
   }
   .holeWrap {
@@ -26,15 +54,29 @@
   }
   .footer {
     display: flex;
-    justify-content: space-evenly;
-    height: 10vh;
-    background: blue;
+    height: 16vh;
+    background: url('/assets/img/frames/ui_bottom.png') center bottom / 100%
+      9.1vh no-repeat;
     .footerBtn {
       display: flex;
       justify-content: center;
       align-items: end;
-      height: 10vh;
-      width: 23%;
+      width: 25%;
+      p {
+        font-size: 1.6rem;
+        color: #fff;
+        text-shadow: -2px -2px 0 #3e3c35, 2px -2px 0 #3e3c35, -2px 2px 0 #3e3c35,
+          2px 2px 0 #3e3c35;
+        margin-bottom: 5%;
+      }
+      &.upgrade {
+        background: url('/assets/img/icons/i_upgrade.png') center bottom / 100%
+          auto no-repeat;
+      }
+      &.exchange {
+        background: url('/assets/img/icons/i_exchange.png') center bottom / 100%
+          no-repeat;
+      }
     }
   }
   .prizeText {

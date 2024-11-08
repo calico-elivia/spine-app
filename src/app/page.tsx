@@ -1,11 +1,13 @@
 'use client' //
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import Image from 'next/image'
 import RabbitSpinePlayer from './components/RabbitSpinePlayer'
-import './page.scss'
 import { AudioMap, spineAssets, rabbitHolePosition } from './constant'
 import CustomSpinePlayer from './components/SpinePlayer'
+import './page.scss'
 
-const websocktUrl = 'wss://m.wlp.asia/wcc?chatId=123&chatName=chat'
+// const websocktUrl = 'wss://m.wlp.asia/wcc?chatId=123&chatName=chat'
+const websocktUrl = ''
 
 const gameItemData = [
   {
@@ -16,7 +18,7 @@ const gameItemData = [
 ]
 const socket = new WebSocket(websocktUrl)
 
-interface ResData {
+interface ResStructure {
   [key: string]:
     | string
     | number
@@ -31,17 +33,16 @@ export default function Home() {
   // 螢幕尺寸
   const [screenSize, setScreenSize] = useState({ x: 0, y: 0 })
   // 遊戲項目
-  const [score, setScore] = useState<number>(0)
+  const [gold, setGold] = useState<number>(0)
   const [bonus, setBonus] = useState<number>(0)
   const [active, setActive] = useState(
     Array(9).fill({ status: false, data: null })
   )
-  const [coin, setCoin] = useState<number>(0)
   // const [showGameItem, setShowGameItem] = useState(false)
   // const [gameItem, setGameItem] = useState(gameItemData)
   const [message, setMessage] = useState('')
 
-  const [userInfo, setUserInfo] = useState<ResData>({})
+  const [userInfo, setUserInfo] = useState<any>({})
   //音效
   const [playing, setPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -87,21 +88,21 @@ export default function Home() {
   )
 
   // 更新總分
-  const updateScore = (newScore: number) => {
-    setScore(prevScore => {
+  const updateScore = (newGold: number) => {
+    setGold(prevGold => {
       // 檢查新的分數與舊的分數是否相同
-      if (prevScore === newScore) {
-        return prevScore // 如果相同，直接回傳舊的分數
+      if (prevGold === newGold) {
+        return prevGold // 如果相同，直接回傳舊的分數
       }
-      return newScore // 否則，更新為新的分數
+      return newGold // 否則，更新為新的分數
     })
   }
 
   //websocket msg解析
-  const replyMap = (reply: string, data: ResData) => {
+  const replyMap = (reply: string, data: ResStructure | any) => {
     switch (reply) {
       case 'login_ok_response':
-        setScore(+data.customer.gold_amount)
+        setGold(data.customer.gold_amount)
         setUserInfo(data)
         // socket.send(
         //   JSON.stringify({
@@ -234,12 +235,14 @@ export default function Home() {
   }
   // 升級
   const handleUpgrade = () => {
-    if (userInfo.customer.next_level_gold < coin) {
+    if (Number(userInfo.customer.next_level_gold) < gold) {
       socket.send(
         JSON.stringify({
           event: 'upgrade',
         })
       )
+    } else {
+      setMessage('Gold不足')
     }
   }
   // 邀請
@@ -278,40 +281,55 @@ export default function Home() {
   return (
     <div className="content relative">
       <div className="header flex-1">
-        <div className="flex">
-          <div className="mr-5">Score: {score}</div>
-          {/* <div className="mr-5">Coin: {coin}</div> */}
-        </div>
-        <div className="topFixBtns">
-          <button onClick={playing ? pause : play}>
-            {playing ? '音效off' : '音效on'}
-          </button>
-          <div>
-            <button
-              onClick={() => {
-                socket.send(
-                  JSON.stringify({
-                    event: 'run',
-                  })
-                )
-              }}
-            >
-              {'START'}
-            </button>
-            <span>{'  '}</span>
-            <button
-              onClick={() =>
-                socket.send(
-                  JSON.stringify({
-                    event: 'pause',
-                  })
-                )
-              }
-            >
-              {'PAUSE'}
-            </button>
+        <div className="flex justify-between">
+          <div className="topBar flex items-center">
+            <div className="coinIcon relative">
+              <Image
+                className="mx-3"
+                src="/assets/img/icons/i_coin.png"
+                fill
+                alt="coin"
+              />
+            </div>
+            <p className="flex-1 text-right mr-3 goldText">{gold}</p>
+            <button className="plusBtn"></button>
+            <button className="speedBtn mx-3" onClick={handleSpeedUp}></button>
           </div>
-          <button onClick={handleSpeedUp}>加速器</button>
+          <button
+            className="audioBtn relative"
+            onClick={playing ? pause : play}
+          >
+            <Image
+              src={`/assets/img/icons/${playing ? 'i_se.png' : 'i_se_off.png'}`}
+              fill
+              alt="audio"
+            />
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              socket.send(
+                JSON.stringify({
+                  event: 'run',
+                })
+              )
+            }}
+          >
+            {'START'}
+          </button>
+          <span>{'  '}</span>
+          <button
+            onClick={() =>
+              socket.send(
+                JSON.stringify({
+                  event: 'pause',
+                })
+              )
+            }
+          >
+            {'PAUSE'}
+          </button>
         </div>
       </div>
       <div className="holeWrap" ref={holeWrapRef}>
@@ -333,12 +351,18 @@ export default function Home() {
         })}
       </div>
       <div className="footer">
-        <div className="footerBtn">Mission</div>
-        <div className="footerBtn" onClick={handleUpgrade}>
-          Upgrade
+        <div className="footerBtn mission">
+          <p>Mission</p>
         </div>
-        <div className="footerBtn">Exchange</div>
-        <div className="footerBtn">Invite</div>
+        <div className="footerBtn upgrade" onClick={handleUpgrade}>
+          <p>Upgrade</p>
+        </div>
+        <div className="footerBtn exchange">
+          <p>Exchange</p>
+        </div>
+        <div className="footerBtn invite">
+          <p>Invite</p>
+        </div>
       </div>
       {/* 提示彈窗 */}
       {message && (
