@@ -36,7 +36,7 @@ export default function Home() {
   const [gold, setGold] = useState<number>(0)
   const [bonus, setBonus] = useState<number>(0)
   const [active, setActive] = useState(
-    Array(9).fill({ status: false, data: null })
+    Array(9).fill({ status: true, data: null })
   )
   // const [showGameItem, setShowGameItem] = useState(false)
   // const [gameItem, setGameItem] = useState(gameItemData)
@@ -306,7 +306,7 @@ export default function Home() {
             />
           </button>
         </div>
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               socket.send(
@@ -330,7 +330,7 @@ export default function Home() {
           >
             {'PAUSE'}
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="holeWrap" ref={holeWrapRef}>
         {rabbitHolePosition.map((hole, index) => {
@@ -360,7 +360,7 @@ export default function Home() {
         <div className="footerBtn exchange">
           <p>Exchange</p>
         </div>
-        <div className="footerBtn invite">
+        <div className="footerBtn invite" onClick={handleInvite}>
           <p>Invite</p>
         </div>
       </div>
