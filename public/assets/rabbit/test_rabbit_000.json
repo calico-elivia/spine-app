@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "4YFT+/cKBMg", "spine": "4.1.24", "x": -68.5, "y": -42.5, "width": 137, "height": 104.5 },
+"skeleton": { "hash": "O2CD+BfNYl8", "spine": "4.1.24", "x": -69.5, "y": -43.5, "width": 139, "height": 105.5 },
 "bones": [
 	{ "name": "root" },
 	{ "name": "rabbit", "parent": "root", "y": -38, "skin": true },
@@ -68,7 +68,7 @@
 		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_001", "y": 38.5, "width": 96, "height": 123 }
 			},
 			"right_head_dec": {
 				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
@@ -77,103 +77,112 @@
 	},
 	{
 		"name": "002",
-		"bones": [ "mid_head_dec", "rabbit" ],
+		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
-			"mid_head_dec": {
-				"mid_head_dec": { "name": "equip/dec_002", "x": 17.6, "y": -1.1, "rotation": -97.62, "width": 36, "height": 51 }
-			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_002", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
+			}
+		}
+	},
+	{
+		"name": "003",
+		"bones": [ "rabbit", "right_head_dec" ],
+		"attachments": {
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_003", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
 			}
 		}
 	},
 	{
 		"name": "004",
-		"bones": [ "mid_head_dec", "rabbit" ],
+		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
-			"mid_head_dec": {
-				"mid_head_dec": { "name": "equip/dec_003", "x": 0.5, "rotation": -99.39, "width": 61, "height": 24 }
-			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_004", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
 			}
 		}
 	},
 	{
 		"name": "005",
-		"bones": [ "glasses", "rabbit" ],
+		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
-			"glasses": {
-				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
-			},
-			"mid_head_dec": {
-				"mid_head_dec": { "name": "equip/dec_004", "x": 9.84, "y": 0.05, "rotation": -98.21, "width": 82, "height": 35 }
-			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_005", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
 			}
 		}
 	},
 	{
 		"name": "006",
-		"bones": [ "glasses", "rabbit" ],
+		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
-			"glasses": {
-				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
-			},
-			"mid_head_dec": {
-				"mid_head_dec": { "name": "equip/dec_004", "x": 9.84, "y": 0.05, "rotation": -98.21, "width": 82, "height": 35 }
-			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_006", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
 			}
 		}
 	},
 	{
 		"name": "007",
-		"bones": [ "glasses", "mid_head_dec", "rabbit", "wig" ],
+		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
-			"glasses": {
-				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
-			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_007", "y": 38.5, "width": 96, "height": 123 }
 			},
-			"wig": {
-				"wig": { "name": "equip/wig_001", "x": 0.32, "y": 1.99, "rotation": -2, "width": 121, "height": 83 }
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
 			}
 		}
 	},
 	{
 		"name": "008",
-		"bones": [ "glasses", "mid_head_dec", "rabbit", "right_head_dec", "wig" ],
+		"bones": [ "rabbit", "right_head_dec" ],
 		"attachments": {
-			"glasses": {
-				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
-			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_008", "y": 38.5, "width": 96, "height": 123 }
 			},
 			"right_head_dec": {
-				"right_head_dec": { "name": "equip/dec_005", "x": 10.77, "y": -1.18, "width": 58, "height": 43 }
-			},
-			"wig": {
-				"wig": { "name": "equip/wig_001", "x": 0.32, "y": 1.99, "rotation": -2, "width": 121, "height": 83 }
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
 			}
 		}
 	},
 	{
 		"name": "009",
+		"bones": [ "rabbit", "right_head_dec" ],
+		"attachments": {
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_009", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
+			}
+		}
+	},
+	{
+		"name": "010",
 		"bones": [ "glasses", "rabbit", "right_head_dec" ],
 		"attachments": {
 			"glasses": {
-				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
 			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_001", "y": 38.5, "width": 96, "height": 123 }
 			},
 			"right_head_dec": {
-				"right_head_dec": { "name": "equip/dec_005", "x": 10.77, "y": -1.18, "width": 58, "height": 43 }
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
 			}
 		}
 	},
@@ -185,7 +194,127 @@
 				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
 			},
 			"rabbit_body": {
-				"rabbit_body": { "name": "body/rabbit_001", "y": 38.5, "width": 96, "height": 123 }
+				"rabbit_body": { "name": "body/rabbit_002", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "012",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_003", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "013",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_004", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "014",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_005", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "015",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_006", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "016",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_007", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "017",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_008", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "018",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_009", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
+			}
+		}
+	},
+	{
+		"name": "019",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_002", "x": -1.5, "y": 0.5, "width": 83, "height": 27 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_010", "y": 38.5, "width": 96, "height": 123 }
 			},
 			"right_head_dec": {
 				"right_head_dec": { "name": "equip/dec_006", "x": 10, "width": 41, "height": 35 }
@@ -208,6 +337,96 @@
 		}
 	},
 	{
+		"name": "024",
+		"bones": [ "mid_head_dec", "rabbit" ],
+		"attachments": {
+			"mid_head_dec": {
+				"mid_head_dec": { "name": "equip/dec_003", "x": 0.5, "rotation": -99.39, "width": 61, "height": 24 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+			}
+		}
+	},
+	{
+		"name": "025",
+		"bones": [ "glasses", "rabbit" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
+			},
+			"mid_head_dec": {
+				"mid_head_dec": { "name": "equip/dec_004", "x": 9.84, "y": 0.05, "rotation": -98.21, "width": 82, "height": 35 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+			}
+		}
+	},
+	{
+		"name": "026",
+		"bones": [ "glasses", "rabbit" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
+			},
+			"mid_head_dec": {
+				"mid_head_dec": { "name": "equip/dec_004", "x": 9.84, "y": 0.05, "rotation": -98.21, "width": 82, "height": 35 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+			}
+		}
+	},
+	{
+		"name": "027",
+		"bones": [ "glasses", "mid_head_dec", "rabbit", "wig" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"wig": {
+				"wig": { "name": "equip/wig_001", "x": 0.32, "y": 1.99, "rotation": -2, "width": 121, "height": 83 }
+			}
+		}
+	},
+	{
+		"name": "038",
+		"bones": [ "glasses", "mid_head_dec", "rabbit", "right_head_dec", "wig" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_008", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_005", "x": 10.77, "y": -1.18, "width": 58, "height": 43 }
+			},
+			"wig": {
+				"wig": { "name": "equip/wig_001", "x": 0.32, "y": 1.99, "rotation": -2, "width": 121, "height": 83 }
+			}
+		}
+	},
+	{
+		"name": "039",
+		"bones": [ "glasses", "rabbit", "right_head_dec" ],
+		"attachments": {
+			"glasses": {
+				"glasses": { "name": "equip/glasses_001", "width": 85, "height": 39 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_000", "y": 38.5, "width": 96, "height": 123 }
+			},
+			"right_head_dec": {
+				"right_head_dec": { "name": "equip/dec_005", "x": 10.77, "y": -1.18, "width": 58, "height": 43 }
+			}
+		}
+	},
+	{
 		"name": "071",
 		"bones": [ "glasses", "rabbit", "right_head_dec" ],
 		"attachments": {
@@ -219,6 +438,18 @@
 			},
 			"right_head_dec": {
 				"right_head_dec": { "name": "equip/dec_001", "width": 40, "height": 40 }
+			}
+		}
+	},
+	{
+		"name": "099",
+		"bones": [ "mid_head_dec", "rabbit" ],
+		"attachments": {
+			"mid_head_dec": {
+				"mid_head_dec": { "name": "equip/dec_002", "x": 17.6, "y": -1.1, "rotation": -97.62, "width": 36, "height": 51 }
+			},
+			"rabbit_body": {
+				"rabbit_body": { "name": "body/rabbit_099", "y": 38.5, "width": 96, "height": 123 }
 			}
 		}
 	}
