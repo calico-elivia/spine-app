@@ -80,11 +80,12 @@ export default function Home() {
             position={index}
             animationSpeed={1}
             socket={socket}
+            screenSize={screenSize}
           />
         )
       }
     },
-    [active]
+    [active, screenSize]
   )
 
   // 更新總分
@@ -283,17 +284,12 @@ export default function Home() {
       <div className="header flex-1">
         <div className="flex justify-between">
           <div className="topBar flex items-center">
-            <div className="coinIcon relative">
-              <Image
-                className="mx-3"
-                src="/assets/img/icons/i_coin.png"
-                fill
-                alt="coin"
-              />
-            </div>
-            <p className="flex-1 text-right mr-3 goldText">{gold}</p>
+            <p className="flex-1 text-right mr-2 goldText">{gold}</p>
             <button className="plusBtn"></button>
-            <button className="speedBtn mx-3" onClick={handleSpeedUp}></button>
+            <button
+              className="speedBtn ml-2 mr-3"
+              onClick={handleSpeedUp}
+            ></button>
           </div>
           <button
             className="audioBtn relative"
@@ -340,8 +336,8 @@ export default function Home() {
               style={{
                 left: hole.left * screenSize.x,
                 top: hole.top * screenSize.y,
-                height: 100 * screenSize.y,
-                width: 100 * screenSize.x,
+                height: 139 * screenSize.y,
+                width: 139 * screenSize.x,
               }}
               key={index}
             >

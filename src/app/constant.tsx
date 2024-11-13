@@ -23,39 +23,39 @@ export const spineAssets = {
 
 export const rabbitHolePosition = [
   {
-    left: 100,
-    top: 250,
+    left: 75,
+    top: 235,
   },
   {
-    left: 272.5,
-    top: 250,
+    left: 250,
+    top: 235,
   },
   {
-    left: 445,
-    top: 250,
+    left: 425,
+    top: 235,
   },
   {
-    left: 100,
-    top: 400,
+    left: 75,
+    top: 385,
   },
   {
-    left: 272.5,
-    top: 400,
+    left: 250,
+    top: 385,
   },
   {
-    left: 445,
-    top: 400,
+    left: 425,
+    top: 385,
   },
   {
-    left: 100,
-    top: 550,
+    left: 75,
+    top: 535,
   },
   {
-    left: 272.5,
-    top: 550,
+    left: 250,
+    top: 535,
   },
   {
-    left: 445,
-    top: 550,
+    left: 425,
+    top: 535,
   },
 ]

@@ -59,8 +59,8 @@ export default function CustomSpinePlayer(props: CustomPlayerProps) {
       id={`player-container`}
       ref={playerContainerRef}
       style={{
-        width: '35vw',
-        height: '35vw',
+        width: '40vw',
+        height: '40vw',
         position: 'absolute',
         top: mousePosition?.y,
         left: mousePosition?.x,

@@ -8,16 +8,24 @@ interface CustomPlayerProps {
   position: number
   animationSpeed?: number
   socket: WebSocket
+  screenSize: { x: number; y: number }
   // children?: React.ReactNode;
 }
 
 export default function RabbitSpinePlayer(props: CustomPlayerProps) {
-  const { jsonUrl, atlasUrl, skin, position, animationSpeed, socket } = props
+  const {
+    jsonUrl,
+    atlasUrl,
+    skin,
+    position,
+    animationSpeed,
+    socket,
+    screenSize,
+  } = props
   const playerContainerRef = useRef(null)
   const playerRef = useRef<SpinePlayer | null>(null)
   //判断是否销毁兔宝宝
   const [finished, setFinished] = useState(false)
-
   // 擊中
   const checkHit = (event: React.MouseEvent<HTMLElement>) => {
     const tar = event.target as HTMLElement
@@ -26,6 +34,7 @@ export default function RabbitSpinePlayer(props: CustomPlayerProps) {
       console.log('HIT!')
       //播放动画
       const trackEntry = playerRef.current?.addAnimation('hit', false)
+
       if (trackEntry) {
         trackEntry.listener = {
           complete: () => setFinished(true),
@@ -91,8 +100,8 @@ export default function RabbitSpinePlayer(props: CustomPlayerProps) {
       id={`player-container-${position}`}
       ref={playerContainerRef}
       style={{
-        width: '100%',
-        height: '100%',
+        height: 123 * screenSize.y,
+        width: 96 * screenSize.x,
       }}
       onClick={event => checkHit(event)}
     />

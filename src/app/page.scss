@@ -4,19 +4,20 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: url('/assets/img/wamr_background_1.jpg') left top / 100% 100%
+  background: url('/assets/img/wamr_background_2.jpg') left top / 100% 100%
     no-repeat;
   .header {
     height: 10vh;
-    padding: 4.5% 3%;
+    padding: 2.5% 3%;
     .topBar {
-      width: 46.5%;
-      height: 70%;
+      width: 48%;
       min-width: 220px;
       font-size: 1.6rem;
       color: #fff;
-      background: url('/assets/img/frames/ui_frame_0.png') center / 100% auto
-        no-repeat;
+      background: url('/assets/img/icons/i_coin.png') 3% center / contain
+          no-repeat,
+        url('/assets/img/frames/ui_frame_0.png') left center / 100% 70%
+          no-repeat;
       .coinIcon {
         width: 7.1vw;
         height: 7.1vw;
@@ -27,22 +28,23 @@
         line-height: 1.5rem;
       }
       .plusBtn {
-        align-self: flex-start;
-        width: 5.6vw;
-        height: 5.6vw;
+        margin-bottom: 3px;
+        width: 6vw;
+        height: 6vw;
         background: url('/assets/img/icons/i_plus.png') center / 60% 60%
             no-repeat,
           url('/assets/img/frames/ui_frame_1.png') center / contain no-repeat;
       }
       .speedBtn {
-        width: 6.25vw;
-        height: 6.25vw;
+        width: 7.5vw;
+        height: 7.5vw;
         background: url('/assets/img/icons/i_speedUp.png') center / contain
             no-repeat,
-          url('/assets/img/frames/ui_frame_2.png') center / contain no-repeat;
+          url('/assets/img/frames/ui_frame_2.png') center / 82% 82% no-repeat;
       }
     }
     .audioBtn {
+      top: calc(7.5vw * 0.3 / 2);
       width: 7.5vw;
       height: 7.5vw;
       background: url('/assets/img/frames/ui_frame_3.png') center / contain
@@ -55,6 +57,10 @@
     height: 74vh;
     .hole {
       position: absolute;
+      background: url('/assets/img/hole.png') center 60% / contain no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .footer {
