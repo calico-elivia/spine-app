@@ -25,7 +25,7 @@ export default function Home() {
   const [gold, setGold] = useState<number>(0)
   const [bonus, setBonus] = useState<number>(0)
   const [active, setActive] = useState(
-    Array(9).fill({ status: true, data: null })
+    Array(9).fill({ status: false, data: null })
   )
   // const [showGameItem, setShowGameItem] = useState(false)
   // const [gameItem, setGameItem] = useState(gameItemData)
