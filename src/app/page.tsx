@@ -6,8 +6,7 @@ import { AudioMap, spineAssets, rabbitHolePosition } from './constant'
 import CustomSpinePlayer from './components/SpinePlayer'
 import './page.scss'
 
-const websocktUrl = 'wss://m.wlp.asia/wcc?chatId=123&chatName=chat'
-// const websocktUrl = ''
+// console.log(process.env.NEXT_PUBLIC_BOT_TOKEN)
 
 const gameItemData = [
   {
@@ -16,7 +15,6 @@ const gameItemData = [
     icon: '',
   },
 ]
-const socket = new WebSocket(websocktUrl)
 
 export default function Home() {
   // 螢幕尺寸
@@ -41,6 +39,11 @@ export default function Home() {
     x: number
     y: number
   } | null>(null)
+
+  // telegram user data
+  const socketRef = useRef<WebSocket | null>(null)
+  const [chatId, setChatId] = useState('123')
+  const [chatName, setChatName] = useState('chat')
 
   // 自適應畫面大小
   const displayRabbitPosition = () => {
@@ -67,7 +70,7 @@ export default function Home() {
             skin={String(level).padStart(3, '0')}
             position={index}
             animationSpeed={1}
-            socket={socket}
+            socket={socketRef.current}
             screenSize={screenSize}
           />
         )
@@ -93,7 +96,7 @@ export default function Home() {
       case 'login_ok_response':
         setGold(data.customer.gold_amount)
         setUserInfo(data)
-        socket.send(
+        socketRef.current?.send(
           JSON.stringify({
             event: 'run',
           })
@@ -150,12 +153,50 @@ export default function Home() {
     // 更新兔子位置
     displayRabbitPosition()
 
+    // 獲取chatId & chatName
+    if (
+      typeof window !== 'undefined' &&
+      window.Telegram &&
+      window.Telegram.WebApp
+    ) {
+      window.Telegram.WebApp.ready()
+      const chatId = window.Telegram.WebApp.initDataUnsafe.chat?.id
+      const chatName = window.Telegram.WebApp.initDataUnsafe.chat?.title
+
+      setChatId(chatId)
+      setChatName(chatName)
+    }
+
+    window.addEventListener('resize', displayRabbitPosition)
+
+    //錘子監聽
+    const holeWrap = holeWrapRef.current
+
+    if (holeWrap) {
+      holeWrap.addEventListener('click', event => {
+        if (holeWrap && holeWrap.contains(event.target as HTMLElement)) {
+          setMousePosition({ x: event.clientX, y: event.clientY })
+        }
+      })
+    }
+    return () => {
+      window.removeEventListener('resize', displayRabbitPosition)
+    }
+  }, [])
+
+  useEffect(() => {
+    // 如果沒有chatId跟chatName就不用連線websocket
+    if (!chatId || !chatName) return
+
+    const websocktUrl = `wss://m.wlp.asia/wcc?chatId=${chatId}&chatName=${chatName}`
+    socketRef.current = new WebSocket(websocktUrl)
+
     //ws
-    socket.onopen = event => {
+    socketRef.current.onopen = event => {
       console.log('WS Connected:', event)
     }
 
-    socket.onmessage = event => {
+    socketRef.current.onmessage = event => {
       //解讀ws event
       if (event.data instanceof Blob) {
         const file = new Blob([event.data], { type: 'text/plain' })
@@ -184,22 +225,10 @@ export default function Home() {
       }
     }
 
-    window.addEventListener('resize', displayRabbitPosition)
-
-    //錘子監聽
-    const holeWrap = holeWrapRef.current
-    if (holeWrap) {
-      holeWrap.addEventListener('click', event => {
-        if (holeWrap && holeWrap.contains(event.target as HTMLElement)) {
-          setMousePosition({ x: event.clientX, y: event.clientY })
-        }
-      })
-    }
-
     // 心跳
     const interval = setInterval(() => {
       console.log('heart beat!')
-      socket.send(
+      socketRef.current?.send(
         JSON.stringify({
           event: 'heart',
         })
@@ -207,16 +236,15 @@ export default function Home() {
     }, 15000)
 
     return () => {
-      window.removeEventListener('resize', displayRabbitPosition)
       console.log('WS Disconnected')
-      socket?.close()
+      socketRef.current?.close()
       clearInterval(interval)
     }
-  }, [])
+  }, [chatId, chatName])
 
   // 加速器
   const handleSpeedUp = () => {
-    socket.send(
+    socketRef.current?.send(
       JSON.stringify({
         event: 'speed',
       })
@@ -225,7 +253,7 @@ export default function Home() {
   // 升級
   const handleUpgrade = () => {
     if (Number(userInfo?.customer.next_level_gold) < gold) {
-      socket.send(
+      socketRef.current?.send(
         JSON.stringify({
           event: 'upgrade',
         })
@@ -236,7 +264,7 @@ export default function Home() {
   }
   // 邀請
   const handleInvite = () => {
-    socket.send(
+    socketRef.current?.send(
       JSON.stringify({
         event: 'invite',
       })
@@ -293,7 +321,7 @@ export default function Home() {
         {/* <div>
           <button
             onClick={() => {
-              socket.send(
+              socketRef.current.send(
                 JSON.stringify({
                   event: 'run',
                 })
@@ -305,7 +333,7 @@ export default function Home() {
           <span>{'  '}</span>
           <button
             onClick={() =>
-              socket.send(
+              socketRef.current.send(
                 JSON.stringify({
                   event: 'pause',
                 })

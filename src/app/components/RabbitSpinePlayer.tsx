@@ -7,7 +7,7 @@ interface CustomPlayerProps {
   skin: string
   position: number
   animationSpeed?: number
-  socket: WebSocket
+  socket: WebSocket | null
   screenSize: { x: number; y: number }
   // children?: React.ReactNode;
 }
@@ -46,7 +46,7 @@ export default function RabbitSpinePlayer(props: CustomPlayerProps) {
       const y = Math.floor(position / 3)
 
       // 推送後端
-      socket.send(
+      socket?.send(
         JSON.stringify({
           event: 'click',
           data: JSON.stringify({ x: x, y: y }),
