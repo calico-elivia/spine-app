@@ -6,8 +6,8 @@ import { AudioMap, spineAssets, rabbitHolePosition } from './constant'
 import CustomSpinePlayer from './components/SpinePlayer'
 import './page.scss'
 
-// const websocktUrl = 'wss://m.wlp.asia/wcc?chatId=123&chatName=chat'
-const websocktUrl = ''
+const websocktUrl = 'wss://m.wlp.asia/wcc?chatId=123&chatName=chat'
+// const websocktUrl = ''
 
 const gameItemData = [
   {
@@ -17,17 +17,6 @@ const gameItemData = [
   },
 ]
 const socket = new WebSocket(websocktUrl)
-
-interface ResStructure {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | string[]
-    | {
-        [key: string]: string | number | boolean | string[]
-      }
-}
 
 export default function Home() {
   // 螢幕尺寸
@@ -41,8 +30,7 @@ export default function Home() {
   // const [showGameItem, setShowGameItem] = useState(false)
   // const [gameItem, setGameItem] = useState(gameItemData)
   const [message, setMessage] = useState('')
-
-  const [userInfo, setUserInfo] = useState<any>({})
+  const [userInfo, setUserInfo] = useState<any>()
   //音效
   const [playing, setPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -100,16 +88,16 @@ export default function Home() {
   }
 
   //websocket msg解析
-  const replyMap = (reply: string, data: ResStructure | any) => {
+  const replyMap = (reply: string, data: any) => {
     switch (reply) {
       case 'login_ok_response':
         setGold(data.customer.gold_amount)
         setUserInfo(data)
-        // socket.send(
-        //   JSON.stringify({
-        //     event: "run",
-        //   })
-        // );
+        socket.send(
+          JSON.stringify({
+            event: 'run',
+          })
+        )
         break
       case 'fail':
         break
@@ -150,8 +138,8 @@ export default function Home() {
       }
       case 'click_ok_response':
       case 'click_fail_response':
-        updateScore(Number(data.total_amount))
-        setBonus(Number(data.bonus_amount))
+        updateScore(data.total_amount)
+        setBonus(data.bonus_amount)
         break
       default:
         break
@@ -209,20 +197,20 @@ export default function Home() {
     }
 
     // 心跳
-    // const interval = setInterval(() => {
-    //   console.log('heart beat!')
-    //   socket.send(
-    //     JSON.stringify({
-    //       event: 'heart',
-    //     })
-    //   )
-    // }, 15000)
+    const interval = setInterval(() => {
+      console.log('heart beat!')
+      socket.send(
+        JSON.stringify({
+          event: 'heart',
+        })
+      )
+    }, 15000)
 
     return () => {
       window.removeEventListener('resize', displayRabbitPosition)
       console.log('WS Disconnected')
       socket?.close()
-      // clearInterval(interval)
+      clearInterval(interval)
     }
   }, [])
 
@@ -236,7 +224,7 @@ export default function Home() {
   }
   // 升級
   const handleUpgrade = () => {
-    if (Number(userInfo.customer.next_level_gold) < gold) {
+    if (Number(userInfo?.customer.next_level_gold) < gold) {
       socket.send(
         JSON.stringify({
           event: 'upgrade',
